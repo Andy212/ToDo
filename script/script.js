@@ -9,42 +9,51 @@ headerButton = document.querySelector('.header-button');
 
 let todoData = [];
 
+window.onunload = function() {
+    localStorage.setItem('items', JSON.stringify(todoData));
+};
+
+
 if (localStorage.getItem('items')) {
     todoData = JSON.parse(localStorage.getItem('items'))
-}
+}else{
+    todoData = [];
+};
 
-const renderLi = function(item){
-    const li = document.createElement('li');
-    li.classList.add('todo-item');
 
-    li.innerHTML = '<span class="text-todo">' + item.value + '</span>' + '<div class="todo-buttons">' + '<button class="todo-remove"></button>' + '<button class="todo-complete"></button>' + '</div>';
+const render = function(){
+    todoList.textContent = '';
+    todoCompleted.textContent = '';
+    todoData.forEach(function(item){
+        const li = document.createElement('li');
+        li.classList.add('todo-item');
 
-    if(item.completed){
-        todoCompleted.append(li);
-    } else{
-        todoList.append(li);
-    };
+        li.innerHTML = '<span class="text-todo">' + item.value + '</span>' + '<div class="todo-buttons">' + '<button class="todo-remove"></button>' + '<button class="todo-complete"></button>' + '</div>';
 
-    const btnTodoRemove = li.querySelector('.todo-remove');
+        if(item.completed){
+            todoCompleted.append(li);
+        } else{
+            todoList.append(li);
+        };
+
+        const btnTodoRemove = li.querySelector('.todo-remove');
         btnTodoRemove.addEventListener('click', function(){
-            li.remove();
-            localStorage.removeItem('items');
+            todoData.forEach(function(i){
+                li.remove();
+                todoData.splice(i, 1);
+                localStorage.setItem('items', JSON.stringify(todoData));
+                render();
+            });
+           
+
         });
 
         const btnTodoCompleted = li.querySelector('.todo-complete');
         btnTodoCompleted.addEventListener('click', function(){
             item.completed = !item.completed;
             render();
+
         });
-
-}
-
-const render = function(){
-    todoList.textContent = '';
-    todoCompleted.textContent = '';
-    todoData.forEach(function(item){
-        
-        renderLi(item);      
     });
 };
 
@@ -55,13 +64,12 @@ todoControl.addEventListener('submit', function(event){
         value: headerInput.value,
         completed: false
     };
-    if(headerInput.value !== ''){
-        renderLi(newTodo);
+    if(headerInput.value !== ''){       
         todoData.push(newTodo);
-        localStorage.setItem('items', JSON.stringify(todoData));
         headerInput.value = '';
+        localStorage.setItem('items', JSON.stringify(todoData));
     };
-    
+    render(); 
 });
 
 render();
