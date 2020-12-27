@@ -38,14 +38,12 @@ const render = function(){
 
         const btnTodoRemove = li.querySelector('.todo-remove');
         btnTodoRemove.addEventListener('click', function(){
-            todoData.forEach(function(i){
-                li.remove();
+            todoData.forEach(function(i){                
                 todoData.splice(i, 1);
                 localStorage.setItem('items', JSON.stringify(todoData));
                 render();
             });
            
-
         });
 
         const btnTodoCompleted = li.querySelector('.todo-complete');
