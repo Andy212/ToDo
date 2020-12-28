@@ -37,13 +37,9 @@ const render = function(){
         };
 
         const btnTodoRemove = li.querySelector('.todo-remove');
-        btnTodoRemove.addEventListener('click', function(){
-            todoData.forEach(function(i){                
-                todoData.splice(i, 1);
-                localStorage.setItem('items', JSON.stringify(todoData));
-                render();
-            });
-           
+        btnTodoRemove.addEventListener('click', function(i){
+                todoData.splice(i, 1);                
+                render();      
         });
 
         const btnTodoCompleted = li.querySelector('.todo-complete');
@@ -65,7 +61,6 @@ todoControl.addEventListener('submit', function(event){
     if(headerInput.value !== ''){       
         todoData.push(newTodo);
         headerInput.value = '';
-        localStorage.setItem('items', JSON.stringify(todoData));
     };
     render(); 
 });
