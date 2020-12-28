@@ -24,7 +24,7 @@ if (localStorage.getItem('items')) {
 const render = function(){
     todoList.textContent = '';
     todoCompleted.textContent = '';
-    todoData.forEach(function(item){
+    todoData.forEach(function(item , i){
         const li = document.createElement('li');
         li.classList.add('todo-item');
 
@@ -37,7 +37,7 @@ const render = function(){
         };
 
         const btnTodoRemove = li.querySelector('.todo-remove');
-        btnTodoRemove.addEventListener('click', function(i){
+        btnTodoRemove.addEventListener('click', function(){
                 todoData.splice(i, 1);                
                 render();      
         });
